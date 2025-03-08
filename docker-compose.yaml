@@ -253,22 +253,59 @@ services:
     image: golift/unpackerr:latest
     container_name: unpackerr
     environment:
-      TZ: ${TZ}
-      UN_DEBUG: true
-      UN_QUIET: false
-      UN_ERROR_STDERR: false
-      UN_ACTIVITY: false
-      UN_LOG_QUEUES: 1m
-      UN_LOG_FILE: ${DOWNLOAD_PATH}/torrents/unpackerr.log
-      UN_LOG_FILES: 10
-      UN_LOG_FILE_MB: 10
-      UN_INTERVAL: 2m
-      UN_START_DELAY: 1m
-      UN_RETRY_DELAY: 5m
-      UN_MAX_RETRIES: 3
-      UN_PARALLEL: 5
-      UN_FILE_MODE: 0644
-      UN_DIR_MODE: 0755
+      - TZ=${TZ}
+      # General config
+      - UN_DEBUG=true
+      - UN_QUIET=false
+      - UN_ERROR_STDERR=false
+      - UN_ACTIVITY=false
+      - UN_LOG_QUEUES=1m
+      - UN_LOG_FILE=${DOWNLOAD_PATH}/torrents/unpackerr.log
+      - UN_LOG_FILES=10
+      - UN_LOG_FILE_MB=10
+      - UN_INTERVAL=2m
+      - UN_START_DELAY=1m
+      - UN_RETRY_DELAY=5m
+      - UN_MAX_RETRIES=3
+      - UN_PARALLEL=5
+      - UN_FILE_MODE=0644
+      - UN_DIR_MODE=0755
+      # Web Server Config
+      - UN_WEBSERVER_METRICS=true
+      - UN_WEBSERVER_LISTEN_ADDR=0.0.0.0:5656
+      - UN_WEBSERVER_LOG_FILE=
+      - UN_WEBSERVER_LOG_FILES=10
+      - UN_WEBSERVER_LOG_FILE_MB=10
+      - UN_WEBSERVER_SSL_CERT_FILE=
+      - UN_WEBSERVER_SSL_KEY_FILE=
+      - UN_WEBSERVER_URLBASE=/
+      - UN_WEBSERVER_UPSTREAMS=
+      # Bazarr
+      - UN_BAZARR_0_URL=http://${HOST_IP}:6767
+      - UN_BAZARR_0_API_KEY=${BAZARR_API}
+      - UN_BAZARR_0_DELETE_ORIG=false
+      # Lidarr Config
+      - UN_LIDARR_0_URL=http://${HOST_IP}:8686
+      - UN_LIDARR_0_API_KEY=${LIDARR_API}
+      - UN_LIDARR_0_DELETE_ORIG=false
+      # Radarr Config
+      - UN_RADARR_0_URL=http://${HOST_IP}:7878
+      - UN_RADARR_0_API_KEY=${RADARR_API}
+      - UN_RADARR_0_DELETE_ORIG=false
+      # Readarr Config
+      - UN_READARR_0_URL=http://${HOST_IP}:8787
+      - UN_READARR_0_API_KEY=${READARR_API}
+      - UN_READARR_0_DELETE_ORIG=false
+      # Sonarr Config
+      - UN_SONARR_0_URL=http://${HOST_IP}:9090
+      - UN_SONARR_0_API_KEY=${SONARR_API}
+      - UN_SONARR_0_DELETE_ORIG=false
+      # Whisparr Config
+      - UN_WHISPARR_0_URL=http://${HOST_IP}:6969
+      - UN_WHISPARR_0_API_KEY=${WHISPARR_API}
+      - UN_WHISPARR_0_DELETE_ORIG=false
+      # Watch Folders
+      - UN_FOLDER_0_PATH=${DOWNLOAD_PATH}/torrents
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${ARR_STACK_PATH}/data/unpackerr:/config
@@ -284,7 +321,7 @@ services:
       - homepage.icon=https://unpackerr.zip/img/icon.png
       - homepage.description=Unpackerr - Watch a download folder and extract new items.
     networks:
-      - ${DOCKER_NETWORK}
+      - arr-net
     hostname: unpackerr
     restart: unless-stopped
 
