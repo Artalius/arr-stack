@@ -40,7 +40,7 @@ This arr-stack simplifies the setup of a Dockerized media automation stack. It c
    ```
 <details><summary>Sample Run  </summary>
    
-![SampleRun](./images/SampleRun.png)
+![SampleRun-small](./images/SampleRun-small.png)
 
 </details>
 
