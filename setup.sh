@@ -109,7 +109,7 @@ validate_api_keys() {
             echo "❌ WARNING: \"$key\" is missing or still contains 'api_key_here'"
             missing_keys=$((missing_keys + 1))
         else
-            echo "✅ \"$key\" is set correctly."
+            echo "✅ \"$key\" is set."
         fi
     done
 
