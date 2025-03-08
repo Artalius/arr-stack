@@ -1,0 +1,40 @@
+#Linux
+*.tar
+*.tar.*
+*.jar
+*.exe
+*.msi
+*.zip
+*.tgz
+*.log
+*.sig
+pkg/
+src/
+
+
+# Node.js dependencies
+/node_modules/
+
+# Python bytecode
+__pycache__/
+
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+
+# Logs
+*.log
+*.log.*
+
+# Build directories
+/build/
+/dist/
+
+# IDE settings
+.vscode/
+/.idea/
+
+# Ignore the /image/ folder
+/images/
