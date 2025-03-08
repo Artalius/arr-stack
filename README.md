@@ -38,6 +38,11 @@ This arr-stack simplifies the setup of a Dockerized media automation stack. It c
    ```bash
    ./setup.sh
    ```
+<details><summary>Sample Run  </summary>
+   
+![SampleRun](./images/SampleRun.png)
+
+</details>
 
 4. Start the stack:
    ```bash
