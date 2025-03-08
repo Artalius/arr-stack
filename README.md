@@ -1,5 +1,7 @@
 # arr-stack
 
+<b>This repository is intended to run only on Linux!</b>
+
 This arr-stack simplifies the setup of a Dockerized media automation stack. It combines various components like Sonarr, Radarr, and other media management tools to automate downloading, organizing, and renaming media. This project aims to streamline the configuration of Docker containers for managing media content efficiently.
 
 ## Features
