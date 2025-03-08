@@ -2,6 +2,15 @@
 
 <b>This repository is intended to run only on Linux!</b>
 
+This ARR stack is only for finding and placing data.
+  Downloading and providing data is handled in separate respective solutions.
+    such as qTor and Plex+Tautulli respectively
+
+All containers hold defines for both Flame and HomePage dockers, feel free to remove or adapt as needed.
+  [Flame](https://hub.docker.com/r/pawelmalak/flame) (Basic)
+  [HomePage](https://github.com/gethomepage/homepage) (Advanced)
+    [Homepage ICONS list](https://github.com/homarr-labs/dashboard-icons/blob/main/ICONS.md)
+
 This arr-stack simplifies the setup of a Dockerized media automation stack. It combines various components like Sonarr, Radarr, and other media management tools to automate downloading, organizing, and renaming media. This project aims to streamline the configuration of Docker containers for managing media content efficiently.
 
 ## Features
