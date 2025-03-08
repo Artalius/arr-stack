@@ -1,0 +1,320 @@
+
+# This ARR stack is only for finding and placing data.
+#   Downloading and providing data is handled in separate respective solutions.
+#     such as qBitTorrent and Plex+Tautulli respectively
+
+# All containers hold defines for both Flame and HomePage dockers, feel free to remove or adapt as needed.
+#   Flame: https://hub.docker.com/r/pawelmalak/flame (Basic)
+#   HomePage: https://github.com/gethomepage/homepage (Advanced)
+
+# Homepage ICONS list
+# https://github.com/homarr-labs/dashboard-icons/blob/main/ICONS.md
+
+
+services:
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      TZ: ${TZ}
+    ports:
+      - "6767:6767"
+    volumes:
+      - ${ARR_STACK_PATH}/data/bazarr:/config
+      - ${MEDIA_PATH}/Movies:/movies
+      - ${MEDIA_PATH}/TV:/tv
+    labels:
+      - flame.type=application
+      - flame.name=Docker - Bazarr
+      - flame.url=${HOST_IP}:6767
+      - flame.icon=chart-box-outline
+      - homepage.group=Docker-Arr
+      - homepage.name=Bazarr
+      - homepage.href=http://${HOST_IP}:6767/
+      - homepage.icon=bazarr.svg
+      - homepage.description=Bazarr - Subtitles for your media
+    hostname: bazarr
+    networks:
+      - ${DOCKER_NETWORK}
+    restart: unless-stopped
+
+  doplarr:
+    image: lscr.io/linuxserver/doplarr:latest
+    container_name: doplarr
+    environment:
+      TZ: ${TZ}
+      DISCORD__TOKEN: ${DISCORD_TOKEN}
+      OVERSEERR__API: ${OVERSEERR_API}
+      OVERSEERR__URL: "${OVERSEERR_URL}:5055"
+      RADARR__API: ${RADARR_API}
+      RADARR__URL: "${HOST_IP}:7878"
+      SONARR__API: ${SONARR_API}
+      SONARR__URL: "${HOST_IP}:8989"
+    ports:
+      - "5056:5055"
+    volumes:
+      - ${ARR_STACK_PATH}/data/doplarr:/config
+    labels:
+      - flame.type=application
+      - flame.name=Docker - Doplarr
+      - flame.url=${HOST_IP}:5056
+      - flame.icon=chart-box-outline
+      - homepage.group=Docker-Arr
+      - homepage.name=Doplarr
+      - homepage.href=http://${HOST_IP}:5056/
+      - homepage.icon=https://raw.githubusercontent.com/kiranshila/Doplarr/refs/heads/main/logos/logo.svg
+      - homepage.description=Doplarr - Manage movie requests from multiple apps
+    hostname: doplarr
+    networks:
+      - ${DOCKER_NETWORK}
+    restart: unless-stopped
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      TZ: ${TZ}
+      LOG_LEVEL: info
+      LOG_HTML: false
+      CAPTCHA_SOLVER: none
+    ports:
+      - "8191:8191"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - flame.type=application
+      - flame.name=Docker - FlareSolverr
+      - flame.url=${HOST_IP}:8191
+      - flame.icon=chart-box-outline
+      - homepage.group=Docker-Arr
+      - homepage.name=FlareSolverr
+      - homepage.href=http://${HOST_IP}:8191/
+      - homepage.icon=flaresolverr.svg
+      - homepage.description=FlareSolverr - Bypass Captchas for your requests
+    hostname: flaresolverr
+    networks:
+      - ${DOCKER_NETWORK}
+    restart: unless-stopped
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      TZ: ${TZ}
+    ports:
+      - "8686:8686"
+    volumes:
+      - ${ARR_STACK_PATH}/data/lidarr:/config
+      - ${DOWNLOAD_PATH}/torrents:/downloads
+      - ${MEDIA_PATH}/Music:/music
+    labels:
+      - flame.type=application
+      - flame.name=Docker - Lidarr
+      - flame.url=${HOST_IP}:8686
+      - flame.icon=chart-box-outline
+      - homepage.group=Docker-Arr
+      - homepage.name=Lidarr
+      - homepage.href=http://${HOST_IP}:8686/
+      - homepage.icon=lidarr.svg
+      - homepage.description=Lidarr - Music collection manager
+    hostname: lidarr
+    networks:
+      - ${DOCKER_NETWORK}
+    restart: unless-stopped
+
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    environment:
+      TZ: ${TZ}
+    ports:
+      - 5055:5055
+    volumes:
+      - ${ARR_STACK_PATH}/data/overseerr:/app/config
+    labels:
+      - flame.type=application
+      - flame.name=Docker - Overseerr
+      - flame.url=${HOST_IP}:5055
+      - flame.icon=chart-box-outline
+      - homepage.group=Docker-Arr
+      - homepage.name=Overseerr
+      - homepage.href=http://${HOST_IP}:5055/
+      - homepage.icon=overseerr.svg
+      - homepage.description=Overseerr - Manage requests for Plex
+    hostname: overseerr
+    networks:
+      - ${DOCKER_NETWORK}
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      TZ: ${TZ}
+    ports:
+      - "9696:9696"
+    volumes:
+      - ${ARR_STACK_PATH}/data/prowlarr:/config
+    labels:
+      - flame.type=application
+      - flame.name=Docker - Prowlarr
+      - flame.url=${HOST_IP}:9696
+      - flame.icon=chart-box-outline
+      - homepage.group=Docker-Arr
+      - homepage.name=Prowlarr
+      - homepage.href=http://${HOST_IP}:9696/
+      - homepage.icon=prowlarr.svg
+      - homepage.description=Prowlarr - Indexer manager for Sonarr and Radarr
+    hostname: prowlarr
+    networks:
+      - ${DOCKER_NETWORK}
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      TZ: ${TZ}
+    ports:
+      - "7878:7878"
+    volumes:
+      - ${ARR_STACK_PATH}/data/radarr:/config
+      - ${DOWNLOAD_PATH}/torrents:/downloads/torrents
+      - ${MEDIA_PATH}/Movies:/movies
+      - ${MEDIA_PATH}/Anime-Movies:/movies/Anime-Movies
+    labels:
+      - flame.type=application
+      - flame.name=Docker - Radarr
+      - flame.url=${HOST_IP}:7878
+      - flame.icon=chart-box-outline
+      - homepage.group=Docker-Arr
+      - homepage.name=Radarr
+      - homepage.href=http://${HOST_IP}:7878/
+      - homepage.icon=radarr.svg
+      - homepage.description=Radarr - Movie collection manager
+    hostname: radarr
+    networks:
+      - ${DOCKER_NETWORK}
+    restart: unless-stopped
+
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop #:latest not valid at time of writing
+    container_name: readarr
+    environment:
+      TZ: ${TZ}
+    ports:
+      - "8787:8787"
+    volumes:
+      - ${ARR_STACK_PATH}/data/readarr:/config
+      - ${DOWNLOAD_PATH}/torrents:/downloads/torrents
+      - ${MEDIA_PATH}/books:/books
+    labels:
+      - flame.type=application
+      - flame.name=Docker - Readarr
+      - flame.url=${HOST_IP}:8787
+      - flame.icon=chart-box-outline
+      - homepage.group=Docker-Arr
+      - homepage.name=Readarr
+      - homepage.href=http://${HOST_IP}:8787/
+      - homepage.icon=readarr.svg
+      - homepage.description=Readarr - Ebook collection manager
+    hostname: readarr
+    networks:
+      - ${DOCKER_NETWORK}
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      TZ: ${TZ}
+    ports:
+      - "8989:8989"
+    volumes:
+      - ${ARR_STACK_PATH}/data/sonarr:/config
+      - ${DOWNLOAD_PATH}/torrents:/downloads
+      - ${MEDIA_PATH}/TV:/tv
+    labels:
+      - flame.type=application
+      - flame.name=Docker - Sonarr
+      - flame.url=${HOST_IP}:8989
+      - flame.icon=chart-box-outline
+      - homepage.group=Docker-Arr
+      - homepage.name=Sonarr
+      - homepage.href=http://${HOST_IP}:8989/
+      - homepage.icon=sonarr.svg
+      - homepage.description=Sonarr - TV collection manager
+    hostname: sonarr
+    networks:
+      - ${DOCKER_NETWORK}
+    restart: unless-stopped
+
+  unpackerr:
+    image: golift/unpackerr:latest
+    container_name: unpackerr
+    environment:
+      TZ: ${TZ}
+      UN_DEBUG: true
+      UN_QUIET: false
+      UN_ERROR_STDERR: false
+      UN_ACTIVITY: false
+      UN_LOG_QUEUES: 1m
+      UN_LOG_FILE: ${DOWNLOAD_PATH}/torrents/unpackerr.log
+      UN_LOG_FILES: 10
+      UN_LOG_FILE_MB: 10
+      UN_INTERVAL: 2m
+      UN_START_DELAY: 1m
+      UN_RETRY_DELAY: 5m
+      UN_MAX_RETRIES: 3
+      UN_PARALLEL: 5
+      UN_FILE_MODE: 0644
+      UN_DIR_MODE: 0755
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${ARR_STACK_PATH}/data/unpackerr:/config
+      - ${DOWNLOAD_PATH}/torrents:/downloads/torrents
+    labels:
+      - flame.type=application
+      - flame.name=Docker - Unpackerr
+      - flame.url=${HOST_IP}:5656
+      - flame.icon=chart-box-outline
+      - homepage.group=Docker-Arr
+      - homepage.name=Unpackerr
+      - homepage.href=http://${HOST_IP}:5656/
+      - homepage.icon=https://unpackerr.zip/img/icon.png
+      - homepage.description=Unpackerr - Watch a download folder and extract new items.
+    networks:
+      - ${DOCKER_NETWORK}
+    hostname: unpackerr
+    restart: unless-stopped
+
+  whisparr:
+    image: ghcr.io/hotio/whisparr:latest
+    container_name: whisparr
+    environment:
+      TZ: ${TZ}
+    ports:
+      - "6969:6969"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${ARR_STACK_PATH}/data/whisparr:/config
+      - ${MEDIA_PATH}/Whisparr:/data
+    labels:
+      - flame.type=application
+      - flame.name=Docker - Whisparr
+      - flame.url=${HOST_IP}:6969
+      - flame.icon=chart-box-outline
+      - homepage.group=Docker-Arr
+      - homepage.name=Whisparr
+      - homepage.href=http://${HOST_IP}:6969/
+      - homepage.icon=https://raw.githubusercontent.com/hotio/whisparr/master/whisparr.png
+      - homepage.description=Whisparr - A Series Manager for Whispers.
+    hostname: whisparr
+    networks:
+      - ${DOCKER_NETWORK}
+    restart: unless-stopped
+
+networks:
+  ${DOCKER_NETWORK}:
+    driver: bridge
+    name: ${DOCKER_NETWORK}
