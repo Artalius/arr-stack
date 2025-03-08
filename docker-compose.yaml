@@ -180,7 +180,7 @@ services:
     volumes:
       - ${ARR_STACK_PATH}/data/radarr:/config
       - ${DOWNLOAD_PATH}/torrents:/downloads/torrents
-      - ${MEDIA_PATH}/Movies:/movies
+      - ${MEDIA_PATH}/Movies:/movies/Movies
       - ${MEDIA_PATH}/Anime-Movies:/movies/Anime-Movies
     labels:
       - flame.type=application
